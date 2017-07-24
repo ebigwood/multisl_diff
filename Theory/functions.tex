@@ -1,0 +1,72 @@
+\title{Multislice Diffraction Theory}
+
+\author{Erik Bigwood}
+
+\date{7/23/17}
+
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{csvsimple}
+\usepackage{tabularx}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{tikz}
+\usepackage{gensymb}
+\usepackage{hyperref}
+\pgfplotsset{compat=1.5}
+\usepackage{multicol}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=blue,
+}
+ 
+\urlstyle{same}
+
+\graphicspath{Images/}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\begin{document}
+	\maketitle
+	\tableofcontents
+	\newpage
+	\pagenumbering{Roman}
+	\section{Functions}
+		\subsection{lambda\_from\_eV}
+			This function takes an energy in eV and returns the 	relativistic electron wavelength. The equation is shown below:
+			\begin{equation}
+				\lambda = \sqrt{\frac{h^2c^2}{E^2-m_0^2 c^2}}
+			\end{equation}
+	
+		\subsection{rotate\_vec\_array}
+			Iterates over each vector in the n x 3 array $\Lambda$ and rotates them around $\hat{x}$, $\hat{y}$, then $\hat{z}$ by $tx$, $t$y, and $tz$ (rad) respectively.
+			That is, 
+			\begin{equation}
+				\Bigg(\forall v\in \Lambda\Bigg)\Bigg(v\to R_z(\theta_z)\cdot R_y(\theta_y)\cdot R_x(\theta_x) \cdot v = \mathcal{R}v\Bigg)
+			\end{equation}
+	
+		\paragraph{rotation\_mat}
+			Returns a matrix corresponding to a rotation around $\hat{x}$, $\hat{y}$, then $\hat{z}$ by $tx$, $t$y, and $tz$ (rad) respectively.\footnote{See  \href{https://en.wikipedia.org/wiki/Rotation\_matrix}{rotation matrices}.}
+				
+			That is,
+				\begin{equation}
+					\mathcal{R}=R_z(\theta_z)\cdot R_y(\theta_y)\cdot R_x(\theta_x)
+				\end{equation}
+			
+			\subparagraph{rotation\_mat\_x}
+				Returns the rotation matrix around $\hat{x}$ by $\theta_x$, $R_x(\theta_x)$.
+				
+			\subparagraph{rotation\_mat\_y}
+				Returns the rotation matrix around $\hat{y}$ by $\theta_y$, $R_y(\theta_y)$.
+			
+			\subparagraph{rotation\_mat\_z}
+				Returns the rotation matrix around $\hat{z}$ by $\theta_z$, $R_z(\theta_z)$.
+\end{document}
