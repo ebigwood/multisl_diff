@@ -5,7 +5,7 @@ from numba import jit
 electron_m0 = 9.10956e-13
 c = 3e8
 J_per_eV =1.60217e-19
-
+Au_param=4.0782e-10
 
 
 
@@ -27,8 +27,8 @@ def mass_from_eV(energy):
 @jit(nopython=True, parallel=False )              
 def rotate_vec_array(array, tx, ty, tz):               #rotation functions
     # iterates over each vector in the array n x 3 array and rotates around x, y, then z by tx, ty, and tz respectively
-    for i in range(numpy.size(arr)[0]):
-        array[i,:] = numpy.dot(rotation_mat(tx,ty,tz),array[i,:])               #multiplies by rotation matrices with thetas given
+    for i in range(numpy.shape(arr)[0]):
+        array[i,:] = numpy.dot(rotation_mat(tx,ty,tz),array[i,:]-mean_vector_array(array))   + mean_vector_array(array)             #multiplies by rotation matrices with thetas given
 
 @jit(nopython=True)
 def rotation_mat(tx,ty,tz):
@@ -46,7 +46,28 @@ def rotation_mat_y(th):
 def rotation_mat_z(th):
     return numpy.array( [(numpy.cos(th),-numpy.sin(th),0),(numpy.sin(th),numpy.cos(th),0),(0,0,1)] )
 
+#@jit(nopython=True)
+def translate_vec_array(arr,trans):
+    # translates an n x 3 array of vectors by an input vector trans
+    for i in range(numpy.shape(arr)[0]):
+        arr[i,:] = arr[i,:]+trans
+    return arr
 
+def mean_vector_array(arr):
+    # returns the mean of all of the vectors in a n x 3 array of vectors arr
+    mean = numpy.array([0,0,0])
+    for i in range(numpy.shape(arr)[0]):
+        mean = mean + arr[i,:]/numpy.shape(arr)[0]
+    return mean
+
+def rotate_tranlate_array(arr, tx,ty,tz, t):
+    # returns the array first rotated and then translated.
+    return translate_vec_array(rotate_vec_array(arr,tx,ty,tz),t)
+
+def rand_vec_len(lent):
+    # outputs a random vector of length lent
+    r = numpy.random.rand(3)
+    return ((r/numpy.power(r,2) @ numpy.ones(3))**0.5)*lent
 
 
 ## lattice functions
@@ -65,7 +86,7 @@ def lattice_populate_single(n,clen,latt_center):
 def lattice_populate_fcc(clen,latt_center,radius):
     # returns a fcc nanoparticle with radius, lattice parameter clen, and centered at latt_center
     fudge = 2           # overestimation factor
-    estimated_n = int(numpy.floor((2*radius)*fudge))
+    estimated_n = int(numpy.floor((2*radius)*fudge/clen))
     latt = numpy.zeros([numpy.power(estimated_n,3),3])                # template lattice init
     
     
@@ -88,3 +109,23 @@ def lattice_populate_fcc(clen,latt_center,radius):
     latt=latt[~(latt==0).all(1)]                #\template sphere prune
     
     return latt
+
+def detector_populate(width, ndet, d_center):
+    # returns a square detector with width, n^2 elements, and centered at d_center
+    det = numpy.zeros([numpy.power(ndet,2),3])
+    for i in range(ndet):                          # template detector populate
+        for j in range(ndet):
+            det[i*ndet+j,:]= width*numpy.array([(i-ndet/2)/ndet,(j-ndet/2)/ndet,0])+d_center
+                                                #\template detector populate
+
+
+
+## geometric diffraction functions
+#@numba.vectorize('[float64(float64, float64, float64)','float64(float64, float64, float64)','float64(float64)'],target='cuda')             eventually vectorize this expression for speedup
+#@jit(nopython=True)
+def phase_point(latt,d_point,lam):
+    # returns the geometric phase from latt at d_point with wavelength lambda
+    return numpy.sum(  numpy.cos(  (2*numpy.pi/lam)*numpy.power(( numpy.power( latt @ numpy.array([1,0,0]).T - d_point @ numpy.array([1,0,0]),2) +numpy.power( latt @ numpy.array([0,1,0]).T - d_point @ numpy.array([0,1,0]),2) + numpy.power( latt @ numpy.array([0,0,1]).T - d_point @ numpy.array([0,0,1]),2)   ),.5)  )  )
+    
+    
+    

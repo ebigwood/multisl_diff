@@ -8,6 +8,7 @@ Python 3.5/numpy package for multislice simulation of pseudo-relativistic electr
 
 Includes geometric/Bragg diffraction modelling functions (ported from Matlab for comparison and utility) and multislice routines. For the multislice theory, see http://muller.research.engineering.cornell.edu/sites/WEELS/summer06/mtutor.pdf
 
+The Thoery directory contains documentation on the project.
 
 Dependencies:
 	-Python 3.5

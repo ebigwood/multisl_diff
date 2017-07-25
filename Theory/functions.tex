@@ -56,11 +56,11 @@
 			Iterates over each vector in the n x 3 array $\Lambda$ and rotates them around $\hat{x}$, $\hat{y}$, then $\hat{z}$ by $tx$, $t$y, and $tz$ (rad) respectively.
 			That is, 
 			\begin{equation}
-				\Bigg(\forall v\in \Lambda\Bigg)\Bigg(v\to R_z(\theta_z)\cdot R_y(\theta_y)\cdot R_x(\theta_x) \cdot v = \mathcal{R}v\Bigg)
+				\Bigg(\forall v\in \Lambda\Bigg)\Bigg(v\to R_z(\theta_z)\cdot R_y(\theta_y)\cdot R_x(\theta_x) \cdot v = \mathcal{R}(v-\vec{\mu}) + \vec{\mu}\Bigg)
 			\end{equation}
 	
 		\paragraph{rotation\_mat}
-			Returns a matrix corresponding to a rotation around $\hat{x}$, $\hat{y}$, then $\hat{z}$ by $tx$, $t$y, and $tz$ (rad) respectively.\footnote{See  \href{https://en.wikipedia.org/wiki/Rotation\_matrix}{rotation matrices}.}
+			Returns a matrix corresponding to a rotation around $\hat{x}$, $\hat{y}$, then $\hat{z}$ by $tx$, $t$y, and $tz$ (rad) respectively.\footnote{See  \href{https://en.wikipedia.org/wiki/Rotation\_matrix}{rotation matrices}.} Note -- rotates around the mean vector $\vec{\mu}$.
 				
 			That is,
 				\begin{equation}
@@ -75,15 +75,37 @@
 			
 			\subparagraph{rotation\_mat\_z}
 				Returns the rotation matrix around $\hat{z}$ by $\theta_z$, $R_z(\theta_z)$.
-				
-				
-				
+			
+			\subparagraph{translate\_vec\_array}
+				Translates each vector in a $n\times 3$	array of vectors $\vec{l}$ by a vector $\vec{t}$.
+				\begin{equation}
+					\Bigg(\forall \vec{v} \in \vec{l}\Bigg)\Bigg(\vec{v}\to\vec{v}+\vec{t}\Bigg)
+				\end{equation}
+			
+			\subparagraph{mean\_vector\_array}
+				Returns the mean vector $\vec{\mu}$ of a $n\times 3$ array of vectors $\vec{l}$, by summing over each vector.
+				\begin{equation}
+					\vec{\mu} = \frac{1}{n} \sum_{i=0}^{n} \vec{l}_i
+				\end{equation}
+			
+			\subparagraph{rotate\_translate\_array}
+				Returns the array of vectors $\vec{l}$ rotated around its center by $\vec{\theta}$ and then translated by $\vec{t}$.
+				\begin{equation}
+					\Bigg(\forall \vec{v} \in \vec{l}\Bigg)\Bigg(\vec{v}\to \text{rotate\_vec\_array}\big(\vec{v}\big)+\vec{t}\Bigg)
+				\end{equation}
+			
+			\subparagraph{rand\_vec\_len}
+				Returns a random vector with length $l$.
+
+			
+			
+			
 	\section{Lattice functions}
 		\subsection{lattice\_populate\_single}
 			Creates and populates a simple cubic lattice with side number $n$, lattice parameter $clen$, and centered at $latt\_center$.
-				\begin{gather}
+				\begin{equation}
 					\Bigg(  \forall	a_i,i \in [0,n]_{\mathbb{Z}},[0,2]_{\mathbb{Z}}\Bigg) \Bigg( \vec{l}_{a_0 n^2 +a_1 n + a_2} = clen \big< a_0-n/2, a_1-n/2,a_2-n/2 \big>  \Bigg)
-				\end{gather}
+				\end{equation}
 		
 		\subsection{lattice\_populate\_fcc}
 			Creates, populates, and prunes a spherical nanoparticle with radius $r$,  lattice parameter $c$, and centered at $latt\_center$. There is an internal overestimation parameter $f$, to ensure full population, currently set at 2.
@@ -104,10 +126,20 @@
 				\end{equation}
 			Now remove all zero vectors from $\vec{l}$ to prune the nanoparticle.
 			
-				
+		\subsection{detector\_populate}
+			Creates and populates a square detector $\vec{d}$ with width $w$, $n^2$ elements, and centered at $\vec{t}$.
+				\begin{equation}
+					\Bigg(  \forall	a_i,i \in [0,n]_{\mathbb{Z}},[0,1]_{\mathbb{Z}}\Bigg) \Bigg( \vec{d}_{a_0 n +a_1} = w \big< (a_0-n/2)/n, (a_1-n/2)/n, 0 \big>  \Bigg) + \vec{t}
+				\end{equation}
 
 
 
+	\section{Geometric Diffraction functions}
+		\subsection{phase\_point}
+			Returns the geometric phase at $\vec{p}$ from a lattice $\vec{l}$, with wavelength $\lambda$.
+				\begin{equation}
+					\phi(\vec{p},\vec{l}) = \sum \cos \Bigg(\frac{2\pi}{\lambda} \sqrt{ \sum_i \big(\vec{l} e_i' - \vec{p} e_i'\big)^2}\Bigg)
+				\end{equation}
 
 
 

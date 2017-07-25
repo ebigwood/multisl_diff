@@ -7,6 +7,13 @@
 \contentsline {subparagraph}{rotation\_mat\_x}{I}{section*.3}
 \contentsline {subparagraph}{rotation\_mat\_y}{I}{section*.4}
 \contentsline {subparagraph}{rotation\_mat\_z}{I}{section*.5}
+\contentsline {subparagraph}{translate\_vec\_array}{I}{section*.6}
+\contentsline {subparagraph}{mean\_vector\_array}{II}{section*.7}
+\contentsline {subparagraph}{rotate\_translate\_array}{II}{section*.8}
+\contentsline {subparagraph}{rand\_vec\_len}{II}{section*.9}
 \contentsline {section}{\numberline {3}Lattice functions}{II}{section.3}
 \contentsline {subsection}{\numberline {3.1}lattice\_populate\_single}{II}{subsection.3.1}
 \contentsline {subsection}{\numberline {3.2}lattice\_populate\_fcc}{II}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}detector\_populate}{III}{subsection.3.3}
+\contentsline {section}{\numberline {4}Geometric Diffraction functions}{III}{section.4}
+\contentsline {subsection}{\numberline {4.1}phase\_point}{III}{subsection.4.1}
