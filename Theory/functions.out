@@ -1,3 +1,8 @@
-\BOOKMARK [1][-]{section.1}{Functions}{}% 1
+\BOOKMARK [1][-]{section.1}{Relativistic functions}{}% 1
 \BOOKMARK [2][-]{subsection.1.1}{lambda\137from\137eV}{section.1}% 2
-\BOOKMARK [2][-]{subsection.1.2}{rotate\137vec\137array}{section.1}% 3
+\BOOKMARK [2][-]{subsection.1.2}{mass\137from\137eV}{section.1}% 3
+\BOOKMARK [1][-]{section.2}{Geometric functions}{}% 4
+\BOOKMARK [2][-]{subsection.2.1}{rotate\137vec\137array}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{Lattice functions}{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{lattice\137populate\137single}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{lattice\137populate\137fcc}{section.3}% 8
